@@ -13,6 +13,10 @@ By understanding these foundational concepts, you can build systems that are **r
 
 ## Backend Engineering Mind Map
 
+![Backend Engineering Mind Map](./NotebookLM%20Mind%20Map.png)
+
+### Interactive Mind Map
+
 ```mermaid
 mindmap
   root((Backend Engineering<br/>First Principles))

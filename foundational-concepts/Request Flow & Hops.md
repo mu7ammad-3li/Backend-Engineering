@@ -5,6 +5,39 @@ In the context of **foundational concepts** for backend engineering, understandi
 ### **Request Flow and Network Hops**
 The sources describe the request flow as a high-level journey that begins at the client side and moves through various infrastructure layers:
 
+```
+┌─────────────┐
+│   Browser   │  ◄── The Origin
+│   (Client)  │
+└──────┬──────┘
+       │
+       │ HTTP Request
+       ▼
+┌─────────────┐
+│  Firewall   │  ◄── Hop 1
+│   / Router  │
+└──────┬──────┘
+       │
+       │ Internet
+       ▼
+┌─────────────┐
+│  Firewall   │  ◄── Hop 2
+│   / Router  │
+└──────┬──────┘
+       │
+       │
+       ▼
+┌─────────────┐
+│   Backend   │  ◄── The Destination
+│   Server    │
+│ (AWS/Cloud) │
+└──────┬──────┘
+       │
+       │ HTTP Response
+       ▼
+   (back to client)
+```
+
 *   **The Origin:** A request is initiated from a **browser**.
 *   **The Hops:** As the request travels over the internet, it passes through different **"hops,"** which include **network firewalls** and other routing mechanisms.
 *   **The Destination:** The request is eventually **routed to a backend server**, which may be located in a remote environment, such as an **AWS server**.
@@ -12,6 +45,49 @@ The sources describe the request flow as a high-level journey that begins at the
 
 ### **Request Flow within the Foundational Context**
 The concept of request flow is not isolated; it serves as the framework for several other foundational backend principles mentioned in the sources:
+
+#### **Server-Side Request Processing**
+```
+┌───────────────────────────────────────────────────────────┐
+│                     Backend Server                        │
+│                                                           │
+│  Request arrives → Middleware Pipeline                    │
+│                                                           │
+│  ┌─────────────┐   ┌──────────────┐   ┌──────────────┐  │
+│  │   Logging   │ → │     Auth     │ → │  Validation  │  │
+│  └─────────────┘   └──────────────┘   └──────────────┘  │
+│         │                  │                   │         │
+│         └──────────────────┼───────────────────┘         │
+│                            │                             │
+│                            ▼                             │
+│                  ┌──────────────────┐                    │
+│                  │  Request Handler │                    │
+│                  └──────────────────┘                    │
+│                            │                             │
+│                            ▼                             │
+│                  ┌──────────────────┐                    │
+│                  │  Response JSON   │                    │
+│                  └──────────────────┘                    │
+└───────────────────────────────────────────────────────────┘
+```
+
+#### **CORS Pre-flight Request Flow**
+```
+Browser                          Server
+   │                               │
+   │  OPTIONS (pre-flight)         │
+   ├──────────────────────────────►│
+   │                               │
+   │  ◄ CORS Headers (Allow?)      │
+   │◄──────────────────────────────┤
+   │                               │
+   │  GET/POST (actual request)    │
+   ├──────────────────────────────►│
+   │                               │
+   │  ◄ Response + Data            │
+   │◄──────────────────────────────┤
+   │                               │
+```
 
 *   **HTTP Protocol:** The communication during this flow is established via **HTTP**. This involves understanding raw messages, methods (GET, POST, PUT, DELETE), and the role of various **HTTP headers** (request, representational, general, and security headers).
 *   **CORS and Pre-flight Requests:** The flow can vary depending on the nature of the request. For instance, the sources highlight the difference between a **simple request** and a **pre-flight request flow**, which involves an initial check from the browser to the server and back before the actual request is sent.
